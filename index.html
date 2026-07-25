@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encuesta · IA en Finanzas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0C1330;
+    --bg:#EEF1FA;
+    --surface:#FFFFFF;
+    --violet:#6D5AE6;
+    --teal:#12C2B4;
+    --amber:#FF9F1C;
+    --muted:#5B6480;
+    --border:#E2E6F2;
+    --border-strong:#C9D0E6;
+    --grad:linear-gradient(120deg,#6D5AE6 0%,#12C2B4 100%);
+    --grad-soft:linear-gradient(120deg,rgba(109,90,230,.10),rgba(18,194,180,.10));
+    --shadow:0 18px 50px -20px rgba(12,19,48,.35);
+    --radius:18px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+  }
+
+  /* animated data ribbon */
+  .ribbon{
+    height:6px;width:100%;
+    background:linear-gradient(90deg,#6D5AE6,#12C2B4,#FF9F1C,#6D5AE6);
+    background-size:300% 100%;
+    animation:slide 9s linear infinite;
+  }
+  @keyframes slide{to{background-position:300% 0}}
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+
+  /* HERO */
+  header.hero{
+    padding:64px 0 34px;
+    position:relative;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--violet);
+    display:flex;align-items:center;gap:10px;margin-bottom:20px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--grad)}
+  h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:clamp(34px,6.5vw,54px);
+    line-height:1.03;
+    letter-spacing:-.02em;
+    margin:0 0 18px;
+  }
+  h1 .accent{
+    background:var(--grad);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .lede{font-size:17px;color:var(--muted);max-width:56ch;margin:0}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:22px;margin-top:26px;
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--muted);
+  }
+  .meta span{display:flex;align-items:center;gap:8px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--teal)}
+
+  /* PROGRESS */
+  .progress-shell{
+    position:sticky;top:0;z-index:20;
+    background:rgba(238,241,250,.85);backdrop-filter:blur(10px);
+    padding:12px 0;margin:0 -20px 28px;border-bottom:1px solid var(--border);
+  }
+  .progress-inner{max-width:760px;margin:0 auto;padding:0 20px;
+    display:flex;align-items:center;gap:14px}
+  .track{flex:1;height:7px;background:var(--border-strong);border-radius:99px;overflow:hidden}
+  .fill{height:100%;width:0;background:var(--grad);border-radius:99px;transition:width .4s ease}
+  .pct{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink);min-width:42px;text-align:right}
+
+  /* SECTIONS */
+  section.card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:30px 28px;
+    margin-bottom:22px;
+    box-shadow:var(--shadow);
+  }
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+  .sec-num{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;
+    color:var(--violet);font-weight:500;
+  }
+  .sec-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:22px;letter-spacing:-.01em;margin:0}
+  .sec-sub{color:var(--muted);font-size:14.5px;margin:2px 0 22px}
+
+  .q{margin-bottom:26px}
+  .q:last-child{margin-bottom:0}
+  .q > label.qlabel{display:block;font-weight:600;font-size:15.5px;margin-bottom:12px}
+  .req{color:var(--amber);font-weight:700}
+  .hint{color:var(--muted);font-size:13px;font-weight:400;margin-left:4px}
+
+  /* text inputs */
+  input[type=text],input[type=email],textarea,select{
+    width:100%;font:inherit;color:var(--ink);
+    background:#F8FAFF;border:1.5px solid var(--border-strong);
+    border-radius:12px;padding:13px 15px;transition:border-color .15s,box-shadow .15s;
+  }
+  textarea{resize:vertical;min-height:96px}
+  input:focus,textarea:focus,select:focus{
+    outline:none;border-color:var(--violet);
+    box-shadow:0 0 0 4px rgba(109,90,230,.14);background:#fff;
+  }
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235B6480' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 15px center;padding-right:42px;cursor:pointer}
+
+  /* option pills (radio & checkbox) */
+  .opts{display:grid;gap:10px}
+  .opts.cols{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+  .opt{
+    display:flex;align-items:center;gap:12px;
+    border:1.5px solid var(--border-strong);border-radius:12px;
+    padding:13px 15px;cursor:pointer;background:#F8FAFF;
+    transition:border-color .15s,background .15s,transform .08s;
+    font-size:14.5px;
+  }
+  .opt:hover{border-color:var(--violet)}
+  .opt:active{transform:scale(.99)}
+  .opt input{accent-color:var(--violet);width:18px;height:18px;margin:0;flex:none}
+  .opt:has(input:checked){
+    border-color:var(--violet);background:var(--grad-soft);font-weight:600;
+  }
+
+  /* scale */
+  .scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .scale label{
+    text-align:center;border:1.5px solid var(--border-strong);border-radius:12px;
+    padding:14px 6px 11px;cursor:pointer;background:#F8FAFF;transition:.15s;
+  }
+  .scale input{position:absolute;opacity:0;pointer-events:none}
+  .scale .n{display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px}
+  .scale .t{font-size:10.5px;color:var(--muted);letter-spacing:.02em}
+  .scale label:hover{border-color:var(--violet)}
+  .scale label:has(input:checked){border-color:var(--violet);background:var(--grad);color:#fff}
+  .scale label:has(input:checked) .t{color:rgba(255,255,255,.85)}
+
+  /* submit */
+  .submit-row{margin-top:6px}
+  button.send{
+    width:100%;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:17px;
+    color:#fff;background:var(--grad);border:none;border-radius:14px;
+    padding:17px;cursor:pointer;letter-spacing:.01em;
+    box-shadow:0 14px 30px -12px rgba(109,90,230,.7);transition:transform .12s,filter .15s;
+  }
+  button.send:hover{filter:brightness(1.05)}
+  button.send:active{transform:translateY(1px)}
+  button.send:disabled{filter:grayscale(.4) brightness(.95);cursor:not-allowed;box-shadow:none}
+  .foot-note{text-align:center;color:var(--muted);font-size:13px;margin-top:16px}
+
+  /* states */
+  .status{margin-top:16px;padding:14px 16px;border-radius:12px;font-size:14.5px;display:none}
+  .status.err{display:block;background:#FFF1E8;border:1px solid #FFC79A;color:#8a4b0d}
+  .banner-done{
+    display:none;text-align:center;padding:56px 28px;
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  .banner-done .check{
+    width:66px;height:66px;border-radius:50%;background:var(--grad);
+    display:grid;place-items:center;margin:0 auto 20px;
+  }
+  .banner-done h2{font-family:'Space Grotesk',sans-serif;font-size:26px;margin:0 0 8px}
+  .banner-done p{color:var(--muted);margin:0}
+
+  .spinner{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);
+    border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:-3px;margin-right:8px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<div class="ribbon"></div>
+
+<div class="progress-shell">
+  <div class="progress-inner">
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="pct" id="pct">0%</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Estudio 2026 · Sector financiero</div>
+    <h1>La inteligencia artificial en <span class="accent">las finanzas</span></h1>
+    <p class="lede">Queremos entender cómo los equipos financieros están adoptando la IA hoy: dónde aporta valor, qué frena su uso y hacia dónde se dirige la inversión. Tus respuestas son anónimas salvo que decidas identificarte.</p>
+    <div class="meta">
+      <span><span class="dot"></span>≈ 5 minutos</span>
+      <span><span class="dot"></span>15 preguntas</span>
+      <span><span class="dot"></span>Respuestas confidenciales</span>
+    </div>
+  </header>
+
+  <form id="surveyForm" novalidate>
+
+    <!-- 01 PERFIL -->
+    <section class="card">
+      <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Tu perfil</h2></div>
+      <p class="sec-sub">Para contextualizar tus respuestas dentro del sector.</p>
+
+      <div class="q">
+        <label class="qlabel">Rol o área principal <span class="req">*</span></label>
+        <div class="opts cols" data-single>
+          <label class="opt"><input type="radio" name="rol" value="Dirección financiera / CFO" required>Dirección financiera / CFO</label>
+          <label class="opt"><input type="radio" name="rol" value="Contabilidad / Reporting">Contabilidad / Reporting</label>
+          <label class="opt"><input type="radio" name="rol" value="Tesorería / Cash">Tesorería / Cash</label>
+          <label class="opt"><input type="radio" name="rol" value="Riesgos / Cumplimiento">Riesgos / Cumplimiento</label>
+          <label class="opt"><input type="radio" name="rol" value="FP&A / Análisis">FP&amp;A / Análisis</label>
+          <label class="opt"><input type="radio" name="rol" value="Otro">Otro</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <label class="qlabel" for="sector">Sector de tu organización <span class="req">*</span></label>
+        <select id="sector" name="sector" required>
+          <option value="" disabled selected>Selecciona una opción…</option>
+          <option>Banca</option><option>Seguros</option><option>Fintech</option>
+          <option>Servicios profesionales</option><option>Industria / Manufactura</option>
+          <option>Retail / Consumo</option><option>Tecnología</option>
+          <option>Sector público</option><option>Otro</option>
+        </select>
+      </div>
+
+      <div class="q">
+        <label class="qlabel">Tamaño de la organización <span class="req">*</span></label>
+        <div class="opts cols">
+          <label class="opt"><input type="radio" name="tamano" value="1-50" required>1–50 empleados</label>
+          <label class="opt"><input type="radio" name="tamano" value="51-250">51–250</label>
+          <label class="opt"><input type="radio" name="tamano" value="251-1000">251–1.000</label>
+          <label class="opt"><input type="radio" name="tamano" value="1000+">Más de 1.000</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 ADOPCIÓN -->
+    <section class="card">
+      <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Nivel de adopción</h2></div>
+      <p class="sec-sub">Dónde estás en el uso de IA dentro de tus procesos financieros.</p>
+
+      <div class="q">
+        <label class="qlabel">¿Usan actualmente IA en procesos financieros? <span class="req">*</span></label>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="usa_ia" value="Sí, en producción" required>Sí, en producción</label>
+          <label class="opt"><input type="radio" name="usa_ia" value="En pruebas / piloto">En pruebas o piloto</label>
+          <label class="opt"><input type="radio" name="usa_ia" value="En evaluación">En evaluación, aún sin implementar</label>
+          <label class="opt"><input type="radio" name="usa_ia" value="No, sin planes">No, y sin planes por ahora</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <label class="qlabel">¿En qué áreas la usan o planean usarla? <span class="hint">(varias opciones)</span></label>
+        <div class="opts cols">
+          <label class="opt"><input type="checkbox" name="areas" value="Previsión / forecasting">Previsión / forecasting</label>
+          <label class="opt"><input type="checkbox" name="areas" value="Automatización de reportes">Automatización de reportes</label>
+          <label class="opt"><input type="checkbox" name="areas" value="Detección de fraude">Detección de fraude</label>
+          <label class="opt"><input type="checkbox" name="areas" value="Conciliación / cierre">Conciliación / cierre</label>
+          <label class="opt"><input type="checkbox" name="areas" value="Gestión de riesgo">Gestión de riesgo</label>
+          <label class="opt"><input type="checkbox" name="areas" value="Análisis de datos">Análisis de datos</label>
+          <label class="opt"><input type="checkbox" name="areas" value="Atención al cliente">Atención al cliente</label>
+          <label class="opt"><input type="checkbox" name="areas" value="Cuentas por cobrar / pagar">Cuentas por cobrar / pagar</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <label class="qlabel">Nivel de madurez de la IA en tu equipo <span class="req">*</span></label>
+        <div class="scale">
+          <label><input type="radio" name="madurez" value="1" required><span class="n">1</span><span class="t">Inicial</span></label>
+          <label><input type="radio" name="madurez" value="2"><span class="n">2</span><span class="t">Explorando</span></label>
+          <label><input type="radio" name="madurez" value="3"><span class="n">3</span><span class="t">En marcha</span></label>
+          <label><input type="radio" name="madurez" value="4"><span class="n">4</span><span class="t">Consolidada</span></label>
+          <label><input type="radio" name="madurez" value="5"><span class="n">5</span><span class="t">Avanzada</span></label>
+        </div>
+      </div>
+
+      <div class="q">
+        <label class="qlabel" for="herramientas">¿Qué herramientas o plataformas usan? <span class="hint">(opcional)</span></label>
+        <input type="text" id="herramientas" name="herramientas" placeholder="Ej.: Claude, Excel Copilot, Power BI, modelos propios…">
+      </div>
+    </section>
+
+    <!-- 03 IMPACTO -->
+    <section class="card">
+      <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Impacto y barreras</h2></div>
+      <p class="sec-sub">Lo que funciona y lo que cuesta.</p>
+
+      <div class="q">
+        <label class="qlabel">Principales beneficios percibidos <span class="hint">(varias opciones)</span></label>
+        <div class="opts cols">
+          <label class="opt"><input type="checkbox" name="beneficios" value="Ahorro de tiempo">Ahorro de tiempo</label>
+          <label class="opt"><input type="checkbox" name="beneficios" value="Menos errores">Menos errores</label>
+          <label class="opt"><input type="checkbox" name="beneficios" value="Mejores decisiones">Mejores decisiones</label>
+          <label class="opt"><input type="checkbox" name="beneficios" value="Reducción de costes">Reducción de costes</label>
+          <label class="opt"><input type="checkbox" name="beneficios" value="Insights más rápidos">Insights más rápidos</label>
+          <label class="opt"><input type="checkbox" name="beneficios" value="Aún sin beneficios claros">Aún sin beneficios claros</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <label class="qlabel">Principales barreras <span class="hint">(varias opciones)</span></label>
+        <div class="opts cols">
+          <label class="opt"><input type="checkbox" name="barreras" value="Calidad de los datos">Calidad de los datos</label>
+          <label class="opt"><input type="checkbox" name="barreras" value="Falta de talento">Falta de talento</label>
+          <label class="opt"><input type="checkbox" name="barreras" value="Coste / presupuesto">Coste / presupuesto</label>
+          <label class="opt"><input type="checkbox" name="barreras" value="Seguridad y privacidad">Seguridad y privacidad</label>
+          <label class="opt"><input type="checkbox" name="barreras" value="Regulación / cumplimiento">Regulación / cumplimiento</label>
+          <label class="opt"><input type="checkbox" name="barreras" value="Confianza en resultados">Confianza en resultados</label>
+          <label class="opt"><input type="checkbox" name="barreras" value="Resistencia interna">Resistencia interna</label>
+          <label class="opt"><input type="checkbox" name="barreras" value="Integración con sistemas">Integración con sistemas</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <label class="qlabel">Confianza en decisiones asistidas por IA <span class="req">*</span></label>
+        <div class="scale">
+          <label><input type="radio" name="confianza" value="1" required><span class="n">1</span><span class="t">Ninguna</span></label>
+          <label><input type="radio" name="confianza" value="2"><span class="n">2</span><span class="t">Poca</span></label>
+          <label><input type="radio" name="confianza" value="3"><span class="n">3</span><span class="t">Media</span></label>
+          <label><input type="radio" name="confianza" value="4"><span class="n">4</span><span class="t">Alta</span></label>
+          <label><input type="radio" name="confianza" value="5"><span class="n">5</span><span class="t">Total</span></label>
+        </div>
+      </div>
+
+      <div class="q">
+        <label class="qlabel">Inversión prevista en IA para los próximos 12 meses <span class="req">*</span></label>
+        <div class="opts cols">
+          <label class="opt"><input type="radio" name="inversion" value="Aumentará" required>Aumentará</label>
+          <label class="opt"><input type="radio" name="inversion" value="Se mantendrá">Se mantendrá igual</label>
+          <label class="opt"><input type="radio" name="inversion" value="Disminuirá">Disminuirá</label>
+          <label class="opt"><input type="radio" name="inversion" value="No sé">No lo sé</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <label class="qlabel" for="comentarios">Comentarios abiertos <span class="hint">(opcional)</span></label>
+        <textarea id="comentarios" name="comentarios" placeholder="¿Qué te gustaría añadir sobre el uso de IA en tu equipo financiero?"></textarea>
+      </div>
+    </section>
+
+    <!-- 04 CONTACTO -->
+    <section class="card">
+      <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Contacto (opcional)</h2></div>
+      <p class="sec-sub">Solo si quieres recibir los resultados del estudio.</p>
+      <div class="q">
+        <label class="qlabel" for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Tu nombre">
+      </div>
+      <div class="q">
+        <label class="qlabel" for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="tu@empresa.com">
+      </div>
+    </section>
+
+    <div class="submit-row">
+      <button type="submit" class="send" id="sendBtn">Enviar respuestas</button>
+      <div class="status err" id="statusErr"></div>
+      <p class="foot-note">Al enviar, tus respuestas se guardan de forma segura en nuestra hoja de cálculo.</p>
+    </div>
+  </form>
+
+  <div class="banner-done" id="done">
+    <div class="check">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h2>¡Gracias por participar!</h2>
+    <p>Tu respuesta ha quedado registrada correctamente.</p>
+  </div>
+</div>
+
+<script>
+/* ==========================================================================
+   CONFIGURACIÓN  —  pega aquí la URL de tu Google Apps Script (paso 4 del README)
+   ========================================================================== */
+const SHEET_ENDPOINT = "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT";
+/* ========================================================================== */
+
+const form   = document.getElementById('surveyForm');
+const fill    = document.getElementById('fill');
+const pct     = document.getElementById('pct');
+const sendBtn = document.getElementById('sendBtn');
+const statusErr = document.getElementById('statusErr');
+
+/* --- barra de progreso: cuenta preguntas obligatorias respondidas --- */
+const requiredNames = ['rol','sector','tamano','usa_ia','madurez','confianza','inversion'];
+function updateProgress(){
+  const fd = new FormData(form);
+  const answered = requiredNames.filter(n => fd.get(n)).length;
+  const p = Math.round((answered / requiredNames.length) * 100);
+  fill.style.width = p + '%';
+  pct.textContent = p + '%';
+}
+form.addEventListener('input', updateProgress);
+form.addEventListener('change', updateProgress);
+updateProgress();
+
+/* --- recoger respuestas (multi-checkbox se une con " | ") --- */
+function collect(){
+  const fd = new FormData(form);
+  const single = ['rol','sector','tamano','usa_ia','madurez','herramientas',
+                  'confianza','inversion','comentarios','nombre','email'];
+  const multi  = ['areas','beneficios','barreras'];
+  const data = { timestamp: new Date().toISOString() };
+  single.forEach(k => data[k] = fd.get(k) || '');
+  multi.forEach(k => data[k] = fd.getAll(k).join(' | '));
+  return data;
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  statusErr.style.display = 'none';
+
+  if(!form.checkValidity()){
+    form.reportValidity();
+    return;
+  }
+  if(SHEET_ENDPOINT.startsWith('PEGA_AQUI')){
+    statusErr.textContent = 'Falta configurar la URL de Google Apps Script en el código (constante SHEET_ENDPOINT).';
+    statusErr.style.display = 'block';
+    return;
+  }
+
+  const original = sendBtn.textContent;
+  sendBtn.disabled = true;
+  sendBtn.innerHTML = '<span class="spinner"></span>Enviando…';
+
+  try{
+    // mode:'no-cors' evita el bloqueo CORS de Apps Script; la fila se guarda igual.
+    await fetch(SHEET_ENDPOINT, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(collect())
+    });
+    form.style.display = 'none';
+    document.getElementById('done').style.display = 'block';
+    window.scrollTo({top:0, behavior:'smooth'});
+  }catch(err){
+    statusErr.textContent = 'No se pudo enviar. Revisa tu conexión y la URL del script, e inténtalo de nuevo.';
+    statusErr.style.display = 'block';
+    sendBtn.disabled = false;
+    sendBtn.textContent = original;
+  }
+});
+</script>
+</body>
+</html>
